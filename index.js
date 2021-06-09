@@ -5,7 +5,7 @@ const choseBestDistance = (t, k, ls) => {
         checkSum = currentSum + ls[index];
         if (checkSum > bestSum && checkSum <= t) {
             bestSum = checkSum;
-            //bestArr = arr.concat([ls[index]]);
+            bestArr = arr.concat([ls[index]]);
         }
     }
     for (let i = 0; i <= ls.length - k; i++) {
@@ -18,14 +18,19 @@ const choseBestDistance = (t, k, ls) => {
             currentArrSum = arr.reduce((sum, elem) => sum + elem, 0);
             for (let n = i + j + k - 1; n < ls.length; n++) {
                 checkDistance(currentArrSum, arr, n);
+                if (arr.length > k - 1) {
+                    arr.pop()
+                }
+                arr.push(ls[n])
+                console.log(arr)
             }
             if (k === 2) break;
         } 
     } 
-    return bestSum  //, {bestSum, bestArr} 
+    return bestSum , {bestSum, bestArr} 
 }
-//choseBestDistance(174, 3, [51, 56, 58, 59, 61])
-let c = choseBestDistance(174, 3, [51, 56, 58, 59, 61])
-console.log(c)
+choseBestDistance(174, 3, [51, 56, 58, 59, 61])
+//let c = choseBestDistance(1740, 5, [51, 56, 58, 59, 61, 100, 110, 120, 130, 140])
+//console.log(c)
 //console.log(c.bestSum, c.bestArr)
 
