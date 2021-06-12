@@ -1,36 +1,34 @@
-const choseBestDistance = (t, k, ls) => {
-    //let bestArr = null; 
-    let checkSum, currentArrSum = 0, arr = [], bestSum = null;
-    const checkDistance = (currentSum, arr, index) => {
-        checkSum = currentSum + ls[index];
-        if (checkSum > bestSum && checkSum <= t) {
-            bestSum = checkSum;
-            bestArr = arr.concat([ls[index]]);
-        }
-    }
-    for (let i = 0; i <= ls.length - k; i++) {
+const combinations = (arr, k) => {
+    let res = [],
+    subArr
+    for (let i = 0; i < arr.length; i++){
         if (k === 1) {
-            checkDistance(currentArrSum, arr, i);
-            continue;
-        } 
-        for (let j = 0; j <= ls.length - k - i; j++) {
-            arr = [ls[i], ...ls.slice(i + j + 1, i + j + k - 1)];
-            currentArrSum = arr.reduce((sum, elem) => sum + elem, 0);
-            for (let n = i + j + k - 1; n < ls.length; n++) {
-                checkDistance(currentArrSum, arr, n);
-                if (arr.length > k - 1) {
-                    arr.pop()
-                }
-                arr.push(ls[n])
-                console.log(arr)
-            }
-            if (k === 2) break;
-        } 
-    } 
-    return bestSum , {bestSum, bestArr} 
+            res.push([arr[i]]);
+        } else {
+            subArr = combinations(arr.slice(i + 1, arr.length), k - 1);
+            for (let j = 0; j < subArr.length; j++ ){
+                subArr[j].unshift(arr[i]);
+                res.push(subArr[j]);
+            }    
+        }
+    }    
+    return res;
 }
-choseBestDistance(174, 3, [51, 56, 58, 59, 61])
-//let c = choseBestDistance(1740, 5, [51, 56, 58, 59, 61, 100, 110, 120, 130, 140])
-//console.log(c)
-//console.log(c.bestSum, c.bestArr)
+const chooseBestDistance = (t, k, ls) => {
+    let currentSum, bestSum = 0;
+    combinations(ls, k).forEach(element => {
+       currentSum = element.reduce((sum, elem) => sum + elem, 0);
+       if (currentSum > bestSum && currentSum <= t) {
+           bestSum =currentSum;
+       }
+    });
+    if (bestSum) return bestSum
+    return null;
+}
+console.log(chooseBestDistance(174, 3, [51, 56, 58, 59, 61])); 
+console.log(chooseBestDistance(163, 3, [50]));
 
+
+
+
+ 
